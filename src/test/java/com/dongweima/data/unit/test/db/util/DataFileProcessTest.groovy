@@ -1,6 +1,7 @@
 package com.dongweima.data.unit.test.db.util
 
 import com.dongweima.data.unit.test.db.bean.Data
+import com.dongweima.utils.file.PathUtil
 import org.junit.Test
 
 class DataFileProcessTest extends GroovyTestCase {
