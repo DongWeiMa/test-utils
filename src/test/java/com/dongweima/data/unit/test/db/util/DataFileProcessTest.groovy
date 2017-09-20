@@ -1,17 +1,15 @@
-package com.dongweima.data.unit.test.db.init
+package com.dongweima.data.unit.test.db.util
 
 import com.dongweima.data.unit.test.db.bean.Data
 import org.junit.Test
 
-class FileProcessTest extends GroovyTestCase {
-
+class DataFileProcessTest extends GroovyTestCase {
+  DataFileProcess dataFileProcess = new DataFileProcess()
   @Test
   void testDealWithFile() {
-    //搞清楚 baseDir在linux下是否是\
-    String baseDir = DataInitScript.class.getResource("/")
-    baseDir = baseDir.substring(5, baseDir.length())
-    String filePath = new File(baseDir,"${File.separator}data${File.separator}xyh_tag_condition").path
-    Data result = FileProcess.dealWithFile(filePath)
+    //todo搞清楚 baseDir在linux下是否是\
+    String filePath = new File(PathUtil.getBaseDir(), "${File.separator}data${File.separator}hbase${File.separator}xyh_tag_condition").path
+    Data result = dataFileProcess.readFile(filePath)
     assertDataIsRight result
   }
 
@@ -23,7 +21,7 @@ class FileProcessTest extends GroovyTestCase {
     assertEquals "xyh_tag_condition",result.tableName
     assertEquals "hbase", result.getType()
     assertTrue result.getColumnMeta().columns.size() > 0
-    assertTrue result.getCloumnValues().size() > 0
+    assertTrue result.getColumnValues().size() > 0
   }
 }
 

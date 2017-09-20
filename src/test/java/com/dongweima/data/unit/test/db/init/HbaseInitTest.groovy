@@ -1,28 +1,46 @@
 package com.dongweima.data.unit.test.db.init
 
-import com.dongweima.data.unit.test.db.bean.ColumnMeta
-import com.dongweima.data.unit.test.db.bean.Data
+import com.dongweima.data.unit.test.db.config.HbaseConfig
 import com.dongweima.utils.db.hbase.HbaseBase
+import com.dongweima.utils.db.hbase.HbaseObj
+import com.dongweima.utils.db.hbase.Row
 import org.apache.hadoop.conf.Configuration
-import org.junit.Test
-import org.junit.Before
-import org.mockito.InjectMocks
-import org.mockito.Mock
-import org.mockito.MockitoAnnotations
-import static org.mockito.Mockito.*
+import spock.lang.Specification
 
-class HbaseInitTest {
-  
+class HbaseInitTest extends Specification {
+
   HbaseInit hbaseInit
+  HbaseBase hbaseBase
 
-  @Before
-  void setUp() {
-   
+  def setup() {
+    hbaseInit = new HbaseInit()
+    hbaseBase = new HbaseBase() {
+      @Override
+      Configuration getConf() {
+        return HbaseConfig.getTestUtil().getConfiguration()
+      }
+    }
   }
 
-  @Test
-  void testInit() {
-    hbaseInit.init(new Data(tableName: "tableName", columnMeta: new ColumnMeta()))
+  def "test init"() {
+    given:
+    HbaseObj obj = new HbaseObj()
+      .buildTableName("xyh_tag")
+      .buildStartRow("role:1")
+      .buildEndRow("role:3")
+
+    when:
+    hbaseInit.init(data)
+    List<Row> list = hbaseBase.scan(obj)
+
+    then:
+    list.size() == 2
+
+    cleanup:
+    //todo clean hbase
+    where:
+    data                                                        | _
+    DataInitScript.getData("test" + File.separator + "xyh_tag") | _
   }
 }
 

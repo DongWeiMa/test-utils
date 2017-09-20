@@ -1,4 +1,4 @@
-package com.dongweima.data.unit.test.db.mysql
+package com.dongweima.data.unit.test.db.util
 
 import com.dongweima.data.unit.test.db.bean.ColumnMeta
 import com.dongweima.data.unit.test.db.bean.ColumnValue

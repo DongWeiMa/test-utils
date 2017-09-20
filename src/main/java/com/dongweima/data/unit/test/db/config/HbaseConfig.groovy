@@ -41,6 +41,7 @@ class HbaseConfig {
   }
 
   static final HBaseTestingUtility getTestUtil() {
+
     if (count == 0) {
       start()
     }

@@ -1,4 +1,4 @@
-package com.dongweima.data.unit.test.db.init
+package com.dongweima.data.unit.test.db.util
 
 import com.dongweima.data.unit.test.db.bean.ColumnValue
 
