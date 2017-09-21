@@ -6,7 +6,7 @@
 
   <groupId>com.dongweima.test</groupId>
   <artifactId>test-util</artifactId>
-  <version>1.0.1</version>
+  <version>1.0.2</version>
 
   <parent>
     <groupId>org.springframework.boot</groupId>
@@ -106,7 +106,7 @@
     <dependency>
       <groupId>com.dongweima.utils</groupId>
       <artifactId>common-utils</artifactId>
-      <version>1.0.1</version>
+      <version>1.0.3</version>
     </dependency>
   </dependencies>
   <repositories>

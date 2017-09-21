@@ -14,6 +14,9 @@ public class SqlFileProcess implements FileProcess<List<String>> {
 
   private StringBuilder unCompeleteSql = new StringBuilder();
   private List<String> sqls = new LinkedList<String>();
+  private String[] start = {"/*", "<!--"};
+  private String[] end = {"*/", "-->"};
+  private boolean isDoc = false;
 
   @Override
   public List<String> readFile(String path) {
@@ -25,6 +28,7 @@ public class SqlFileProcess implements FileProcess<List<String>> {
     }
 
     if (lines != null) {
+      //支持更多的语法
       for (String line : lines) {
         if (line != null && !"".equals(line)) {
           addLine(line);
@@ -39,11 +43,77 @@ public class SqlFileProcess implements FileProcess<List<String>> {
     return readFile(new File(PathUtil.getBaseDir(), path).getPath());
   }
 
+  //上下文
+//几种情况
+//注释： 多行 单行 行内注释
+//sql 单行 多行
+// 注释类型
+//   # 开头的单行注释
+//   /*开头的多行注释
+//   <!----> 的注释
   private void addLine(String line) {
+    line = deleteSingleLineDoc(line);
+    if (line == null || line.equals("")) {
+      return;
+    }
+    if (line.contains("/**") || line.contains("<!--")) {
+      isDoc = true;
+    }
+    if (isDoc && line.contains("*/")) {
+      line = line.substring(line.indexOf("*/") + 2, line.length());
+      unCompeleteSql = new StringBuilder();
+      isDoc = false;
+    }
+    if (isDoc && line.contains("-->")) {
+      line = line.substring(line.indexOf("-->") + 3, line.length());
+      unCompeleteSql = new StringBuilder();
+      isDoc = false;
+    }
     unCompeleteSql.append(line);
     if (line.contains(";")) {
-      sqls.add(unCompeleteSql.toString());
+      if (!isDoc) {
+        sqls.add(unCompeleteSql.toString());
+      }
       unCompeleteSql = new StringBuilder();
+      isDoc = false;
     }
+  }
+
+  private String deleteSingleLineDoc(String line) {
+    if (line.startsWith("//") || line.startsWith("#")) {
+      return null;
+    }
+    if (line.contains("//")) {
+      line = line.substring(0, line.indexOf("//"));
+    }
+    if (line.contains("#")) {
+      line = line.substring(0, line.indexOf("#"));
+    }
+    if (line.contains("/*") && line.contains("*/")) {
+      //边界值
+      line = line.substring(0, line.indexOf("/*")) + line
+          .substring(line.indexOf("*/") + 2, line.length());
+    }
+    if (line.contains("<!--") && line.contains("-->")) {
+      //边界值
+      line = line.substring(0, line.indexOf("<!--")) + line
+          .substring(line.indexOf("-->") + 3, line.length());
+    }
+    return line;
+  }
+
+  public static void main(String[] args) {
+    SqlFileProcess sqlFileProcess = new SqlFileProcess();
+    System.out.println(sqlFileProcess.deleteSingleLineDoc("#"));
+    System.out.println(sqlFileProcess.deleteSingleLineDoc("dsadsa#dsa  "));
+    System.out.println(sqlFileProcess.deleteSingleLineDoc("dsadsa#dsa"));
+    System.out.println(sqlFileProcess.deleteSingleLineDoc("dsadsa//dsa  "));
+    System.out.println(sqlFileProcess.deleteSingleLineDoc("dsadsa//dsa"));
+    System.out.println(sqlFileProcess.deleteSingleLineDoc("/*dsa*/"));
+    System.out.println(sqlFileProcess.deleteSingleLineDoc("dsadsa/*dsa*/   "));
+    System.out.println(sqlFileProcess.deleteSingleLineDoc("dsadsa/*dsa*/"));
+    System.out.println(sqlFileProcess.deleteSingleLineDoc("<!--dsa-->"));
+    System.out.println(sqlFileProcess.deleteSingleLineDoc("  dsadsa <!--dsa-->  "));
+    System.out.println(sqlFileProcess.deleteSingleLineDoc("  dsadsa <!--dsa-->"));
   }
 }
