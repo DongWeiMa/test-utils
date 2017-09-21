@@ -5,6 +5,7 @@ import org.apache.hadoop.hbase.HBaseTestingUtility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +16,7 @@ public class HbaseConfig {
   private static Logger logger = LoggerFactory.getLogger(HbaseConfig.class);
 
   @Bean
+  @Lazy
   public Configuration hbaseConfiguration() {
     start();
     return getTestUtil().getConfiguration();
