@@ -18,14 +18,13 @@ public class HbaseConfig {
   @Bean
   @Lazy
   public Configuration hbaseConfiguration() {
-    start();
-    return getTestUtil().getConfiguration();
+    return testUtil.getConfiguration();
   }
 
   private static int count = 0;
   private static final HBaseTestingUtility testUtil = new HBaseTestingUtility();
 
-  private static void start() {
+  public static void start() {
     if (count == 0) {
       synchronized (HbaseConfig.class) {
         if (count == 0) {

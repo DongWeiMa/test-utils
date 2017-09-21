@@ -6,7 +6,7 @@
 
   <groupId>com.dongweima.test</groupId>
   <artifactId>test-util</artifactId>
-  <version>1.0.6</version>
+  <version>1.0.7</version>
   <packaging>jar</packaging>
 
   <parent>

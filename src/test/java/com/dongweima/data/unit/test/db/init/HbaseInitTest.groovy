@@ -13,6 +13,7 @@ class HbaseInitTest extends Specification {
   HbaseBase hbaseBase
 
   def setup() {
+    HbaseConfig.start()
     hbaseInit = new HbaseInit()
     hbaseBase = new HbaseBase() {
       @Override
