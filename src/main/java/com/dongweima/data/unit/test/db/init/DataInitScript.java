@@ -20,7 +20,7 @@ public class DataInitScript {
   private static int count = 0;
   private static int mysql = 0;
 
-  static void initAll(boolean skipHbsae) {
+  public static void initAll(boolean skipHbsae) {
     if (count == 0) {
       synchronized (DataInitScript.class) {
         if (count == 0) {
@@ -57,7 +57,7 @@ public class DataInitScript {
     }
   }
 
-  static Data getData(String fileName) {
+  public static Data getData(String fileName) {
     return dataFileProcess.readFileWithResourcePath(fileName);
   }
 

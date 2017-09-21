@@ -6,7 +6,8 @@
 
   <groupId>com.dongweima.test</groupId>
   <artifactId>test-util</artifactId>
-  <version>1.0.2</version>
+  <version>1.0.3</version>
+  <packaging>jar</packaging>
 
   <parent>
     <groupId>org.springframework.boot</groupId>
