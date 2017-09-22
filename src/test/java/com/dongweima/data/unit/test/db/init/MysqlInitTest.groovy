@@ -7,7 +7,7 @@ import spock.lang.Specification
 @SuppressWarnings("all")
 class MysqlInitTest extends Specification {
 
-  MysqlInit mysqlInit = new MysqlInit()
+  private MysqlInit mysqlInit = new MysqlInit()
 
   def setup() {
     DataInitScript.initAll(true)

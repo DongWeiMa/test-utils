@@ -1,23 +1,34 @@
 package com.dongweima.data.unit.test.db.util
 
 import com.dongweima.data.unit.test.db.bean.ColumnMeta
-import org.junit.Test
+import spock.lang.Specification
 
-class ColumnMetaLineProcessTest  extends GroovyTestCase{
-  ColumnMetaLineProcess columnMetaLineProcess = new ColumnMetaLineProcess()
+import static org.junit.Assert.assertArrayEquals
 
-  @Test
-  void test_hbase_meta() {
-   def arr = ["base:ptRule","base:family","base:quality","org:schoolId","org:structId"].toArray()
+class ColumnMetaLineProcessTest extends Specification {
+  private ColumnMetaLineProcess columnMetaLineProcess = new ColumnMetaLineProcess()
+
+  void "test hbase meta"() {
+    given:
+    def arr = ["base:ptRule", "base:family", "base:quality", "org:schoolId", "org:structId"].toArray()
+
+    when:
     ColumnMeta result = columnMetaLineProcess.dealWithLine("base(ptRule,family,quality) org(schoolId,structId)")
-    assertArrayEquals arr,result.getColumns().toArray()
+
+    then:
+    assertArrayEquals arr, result.getColumns().toArray()
   }
 
-  @Test
-  void test_mysql_meta() {
-    def arr = ["1","2","3"].toArray()
+
+  void "test mysql meta"() {
+    given:
+    def arr = ["1", "2", "3"].toArray()
+
+    when:
     ColumnMeta result = columnMetaLineProcess.dealWithLine("1,2,3")
-    assertArrayEquals arr,result.getColumns().toArray()
+
+    then:
+    assertArrayEquals arr, result.getColumns().toArray()
   }
 
 }

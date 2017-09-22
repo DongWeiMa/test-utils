@@ -3,7 +3,7 @@ package com.dongweima.data.unit.test.db.bean
 import spock.lang.Specification
 
 class ColumnValueTest extends Specification {
-  ColumnValue columnValue
+  private ColumnValue columnValue
 
   def setup() {
     columnValue = new ColumnValue()
@@ -17,9 +17,9 @@ class ColumnValueTest extends Specification {
     result.addColumnValue("3")
     result.addColumnValue("4")
     columnValue.addColumnValue("3")
+
     then:
     result.values.size() == 4
-
     columnValue.values.size() == 3
   }
 
@@ -35,5 +35,3 @@ class ColumnValueTest extends Specification {
     result.size() == 4
   }
 }
-
-//Generated with love by TestMe :) Please report issues and submit feature requests at: http://weirddev.com/forum#!/testme

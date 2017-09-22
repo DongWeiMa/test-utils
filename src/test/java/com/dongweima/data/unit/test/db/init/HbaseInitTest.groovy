@@ -9,8 +9,8 @@ import spock.lang.Specification
 
 class HbaseInitTest extends Specification {
 
-  HbaseInit hbaseInit
-  HbaseBase hbaseBase
+  private HbaseInit hbaseInit
+  private HbaseBase hbaseBase
 
   def setup() {
     HbaseConfig.start()
@@ -44,5 +44,3 @@ class HbaseInitTest extends Specification {
     DataInitScript.getData("test" + File.separator + "xyh_tag") | _
   }
 }
-
-//Generated with love by TestMe :) Please report issues and submit feature requests at: http://weirddev.com/forum#!/testme

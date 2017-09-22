@@ -3,7 +3,7 @@ package com.dongweima.data.unit.test.db.bean
 import spock.lang.Specification
 
 class ColumnMetaTest extends Specification {
-  ColumnMeta columnMeta
+  private ColumnMeta columnMeta
 
   def setup() {
     columnMeta = new ColumnMeta()
@@ -27,6 +27,7 @@ class ColumnMetaTest extends Specification {
     when:
     List<String> columns = columnMeta.getColumns()
     columns.add("4")
+
     then:
     columns.size() == 3
     columnMeta.columns.size() == 2

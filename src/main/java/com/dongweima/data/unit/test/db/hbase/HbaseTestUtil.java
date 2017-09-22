@@ -207,6 +207,9 @@ public abstract class HbaseTestUtil {
 
   //todo 判断namespace是否存在
   public static void createNameSpace(String name) {
+    if (namespaceExist(name)) {
+      return;
+    }
     Connection connection = getConnection();
     Admin admin = null;
     try {

@@ -2,27 +2,16 @@ package com.dongweima.data.unit.test.db.init;
 
 import com.dongweima.data.unit.test.db.bean.ColumnValue;
 import com.dongweima.data.unit.test.db.bean.Data;
-import com.dongweima.data.unit.test.db.config.HbaseConfig;
-import com.dongweima.utils.db.hbase.HbaseBase;
+import com.dongweima.data.unit.test.db.hbase.HbaseTestUtil;
 import com.dongweima.utils.db.hbase.Row;
 import java.util.HashSet;
 import java.util.Set;
-import org.apache.hadoop.conf.Configuration;
 
 public class HbaseInit implements Init {
 
-  private HbaseBase hbaseBase;
-
   @Override
   public void init(Data data) {
-    if (hbaseBase == null) {
-      hbaseBase = new HbaseBase() {
-        @Override
-        public Configuration getConf() {
-          return HbaseConfig.getTestUtil().getConfiguration();
-        }
-      };
-    }
+
     Object[] metas = (data.getColumnMeta().getColumns().toArray());
     Set<String> familySet = new HashSet<String>();
     String[] families = new String[metas.length];
@@ -41,7 +30,7 @@ public class HbaseInit implements Init {
       for (int i = 0; i < metas.length; i++) {
         row.setCellValue(families[i], qualities[i], (String) values[i + 1]);
       }
-      hbaseBase.put(data.getTableName(), row);
+      HbaseTestUtil.put(data.getTableName(), row);
     }
 
   }
@@ -49,10 +38,10 @@ public class HbaseInit implements Init {
   //自动创建表
   //但是可能列簇会少
   private void createTable(String tableName, Set<String> families) {
-    if (!hbaseBase.tableExist(tableName)) {
+    if (!HbaseTestUtil.tableExist(tableName)) {
       String[] f = new String[families.size()];
       f = families.toArray(f);
-      hbaseBase.createTable(tableName, f);
+      HbaseTestUtil.createTable(tableName, f);
     }
   }
 }
