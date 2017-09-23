@@ -10,5 +10,5 @@ import org.junit.runners.Suite
   ColumnMetaTest.class,
   ColumnValueTest.class
 ])
-class TestSuit {
+class BeanSuit {
 }

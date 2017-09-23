@@ -2,6 +2,8 @@ package com.dongweima.data.unit.test.db.bean
 
 import spock.lang.Specification
 
+import static org.assertj.core.api.Assertions.assertThat
+
 class ColumnMetaTest extends Specification {
   private ColumnMeta columnMeta
 
@@ -11,7 +13,7 @@ class ColumnMetaTest extends Specification {
     columnMeta.addColumn("2")
   }
 
-  def "when add column after copy should effect the copy"() {
+  def "right test: when add column after copy should effect the copy"() {
     when:
     ColumnMeta result = columnMeta.copy()
     result.addColumn("3")
@@ -19,8 +21,13 @@ class ColumnMetaTest extends Specification {
     columnMeta.addColumn("5")
 
     then:
-    result.getColumns().size() == 3
-    columnMeta.getColumns().size() == 4
+    assertThat(result.getColumns())
+      .hasSize(3)
+      .contains("3")
+    assertThat(columnMeta.getColumns())
+      .hasSize(4)
+      .contains("4", "5")
+
   }
 
   def "get columns should return the new list"() {
