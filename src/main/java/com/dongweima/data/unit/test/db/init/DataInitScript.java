@@ -57,8 +57,17 @@ public class DataInitScript {
     }
   }
 
-  public static Data getData(String fileName) {
+  public static Data getDataWithResourcePath(String fileName) {
     return dataFileProcess.readFileWithResourcePath(fileName);
+  }
+
+  public static void initDataWithResourcePath(String fileName) {
+    Data data = dataFileProcess.readFileWithResourcePath(fileName);
+    if (data.getType().equals("mysql")) {
+      mysqlInit.init(data);
+    } else {
+      hbaseInit.init(data);
+    }
   }
 
   /**

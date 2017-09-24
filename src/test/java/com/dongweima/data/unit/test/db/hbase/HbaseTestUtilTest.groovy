@@ -4,7 +4,6 @@ import com.dongweima.utils.db.hbase.HbaseObj
 import com.dongweima.utils.db.hbase.Row
 import org.apache.hadoop.hbase.filter.FilterList
 import org.apache.hadoop.hbase.filter.PageFilter
-import org.junit.Test
 import spock.lang.Specification
 
 import static org.junit.Assert.assertEquals
@@ -15,40 +14,15 @@ class HbaseTestUtilTest extends Specification {
 
   private static final String user_group = "user_group:user_event"
 
-  // run before the first feature method
-  void setupSpec() throws Throwable {
+  def setupSpec() throws Throwable {
     HbaseTestUtil.createNameSpace("user_group")
     String[] families = ["user", "1", "2", "3", "4", "5"]
     HbaseTestUtil.createTable("user_group:user_event", families)
     HbaseTestUtil.createTable("test", families)
-    //生成数据
     createData()
   }
 
-  /**
-   * 数据说明 3个事件 事件元数据定义在mysql表中 分别是 阅读事件，点击事件 这两种元事件数据 2个阅读事件 两个点击事件 一个色彩事件的上层重复事件
-   */
-  private static void createData() throws Throwable {
-    Long groupId = 1L
-    for (int i = 0; i < 10; i++) {
-      Row row = new Row()
-      String userId = Integer.toString(i)
-      row.setRowKey("000000000" + groupId + userId)
-      row.setCellValue("user", "id", userId)
-      row.setCellValue("user", "name", "userName" + userId)
-      row.setCellValue("1", "code", Integer.toString(i % 2))
-      row.setCellValue("2", "code", Integer.toString(i % 3))
-      //为了测试默认值 默认只有i为偶数才有code
-      if (i % 2 == 0) {
-        row.setCellValue("3", "code", Integer.toString(i % 2))
-      }
-      HbaseTestUtil.put(user_group, row)
-    }
-  }
-
-
-  @Test
-  void "test drop table"() throws Exception {
+  def "test drop table"() throws Exception {
     when:
     HbaseTestUtil.dropTable("test")
 
@@ -56,8 +30,7 @@ class HbaseTestUtilTest extends Specification {
     assertEquals(false, HbaseTestUtil.tableExist("test"))
   }
 
-  @Test
-  void "test create table"() throws Throwable {
+  def "test create table"() throws Throwable {
     given:
     String tableName = "createTable"
     String[] familes = new String[1]
@@ -70,7 +43,7 @@ class HbaseTestUtilTest extends Specification {
     assertEquals(true, HbaseTestUtil.tableExist(tableName))
   }
 
-  void "test table exist"() {
+  def "test table exist"() {
     given:
     String tableName1 = "hhhh"
     String tableName2 = user_group
@@ -101,7 +74,7 @@ class HbaseTestUtilTest extends Specification {
   }
 
 
-  void "should return the all qualifier in the family when scan"() throws Exception {
+  def "should return the all qualifier in the family when scan"() throws Exception {
     given:
     //选中 一个列簇 应当返回该列簇所有列
     HbaseObj obj = new HbaseObj()
@@ -118,8 +91,7 @@ class HbaseTestUtilTest extends Specification {
     assertEquals(2, result.get(0).getFamilies().get(0).getQualifiers().size())
   }
 
-  @Test
-  void "should return one qualifier in the family when we ask one qualifier although we set family"() {
+  def "should return one qualifier in the family when we ask one qualifier although we set family"() {
     given:
     //选中 一个列簇 应当返回该列簇所有列
     HbaseObj obj = new HbaseObj()
@@ -137,8 +109,7 @@ class HbaseTestUtilTest extends Specification {
     assertEquals(1, result.get(0).getFamilies().get(0).getQualifiers().size())
   }
 
-
-  void "should return 2 or more lines when i user page filter limit 2 and no set end row"() {
+  def "should return 2 or more lines when i user page filter limit 2 and no set end row"() {
     given:
     HbaseObj obj = new HbaseObj()
       .buildTableName(user_group)
@@ -156,7 +127,7 @@ class HbaseTestUtilTest extends Specification {
   }
 
 
-  void "simple scan"() {
+  def "simple scan"() {
     given:
     List<Row> list = HbaseTestUtil.simpleScan(user_group, "00000000013", "00000000014")
 
@@ -164,8 +135,7 @@ class HbaseTestUtilTest extends Specification {
     assertEquals(1, list.size())
   }
 
-  @Test
-  void "should return reversed list and 2 or more lines when i use page filter limit 2 and set isReversed true"() {
+  def "should return reversed list and 2 or more lines when i use page filter limit 2 and set isReversed true"() {
     given:
     HbaseObj obj = new HbaseObj()
       .buildTableName(user_group)
@@ -183,7 +153,7 @@ class HbaseTestUtilTest extends Specification {
     assertEquals("00000000012", result.get(1).getRowKey())
   }
 
-  void "test create nameSpace"() throws Exception {
+  def "test create nameSpace"() throws Exception {
     given:
     String name = "creatNamespace"
 
@@ -194,7 +164,7 @@ class HbaseTestUtilTest extends Specification {
     assertEquals(true, HbaseTestUtil.namespaceExist(name))
   }
 
-  void "test namespace exist"() {
+  def "test namespace exist"() {
     given:
     String name = "user_group"
 
@@ -202,4 +172,27 @@ class HbaseTestUtilTest extends Specification {
     assertEquals(true, HbaseTestUtil.namespaceExist(name))
     assertEquals(false, HbaseTestUtil.namespaceExist("hhhhh"))
   }
+
+  /**
+   * 数据说明 3个事件 事件元数据定义在mysql表中 分别是 阅读事件，点击事件 这两种元事件数据 2个阅读事件 两个点击事件 一个色彩事件的上层重复事件
+   */
+  // todo 改成data文件
+  private static void createData() throws Throwable {
+    Long groupId = 1L
+    for (int i = 0; i < 10; i++) {
+      Row row = new Row()
+      String userId = Integer.toString(i)
+      row.setRowKey("000000000" + groupId + userId)
+      row.setCellValue("user", "id", userId)
+      row.setCellValue("user", "name", "userName" + userId)
+      row.setCellValue("1", "code", Integer.toString(i % 2))
+      row.setCellValue("2", "code", Integer.toString(i % 3))
+      //为了测试默认值 默认只有i为偶数才有code
+      if (i % 2 == 0) {
+        row.setCellValue("3", "code", Integer.toString(i % 2))
+      }
+      HbaseTestUtil.put(user_group, row)
+    }
+  }
+
 }

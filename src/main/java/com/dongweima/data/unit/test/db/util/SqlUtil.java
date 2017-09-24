@@ -12,25 +12,32 @@ public class SqlUtil {
 
   public static String buildInsertSql(String tableName, ColumnMeta columnMeta,
       ColumnValue columnValue) {
-    StringBuilder sql = new StringBuilder("insert into " + tableName + " (");
-    List<String> list = columnMeta.getColumns();
-    int lastIndex = list.size() - 1;
-    for (String columnName : list) {
-      sql.append(columnName);
-      if (!columnName.equals(list.get(lastIndex))) {
-        sql.append(",");
-      }
-    }
-    StringBuilder s = new StringBuilder(sql + ") values(");
+    StringBuilder metaSql = new StringBuilder();
+    StringBuilder valueSql = new StringBuilder();
     List<String> values = columnValue.getColumnValues();
-    lastIndex = values.size() - 1;
+    List<String> metas = columnMeta.getColumns();
+    int lastIndex = values.size() - 1;
+    int i = -1;
     for (String value : values) {
-      s.append("'").append(value).append("'");
-      if (!value.equals(values.get(lastIndex))) {
-        s.append(",");
+      i++;
+      if (value != null && !value.equals("")) {
+        metaSql.append(metas.get(i));
+        valueSql.append("'").append(value).append("'");
+        if (!value.equals(values.get(lastIndex))) {
+          valueSql.append(",");
+          metaSql.append(",");
+        }
       }
     }
-    s.append(") ");
-    return s.toString();
+    StringBuilder sql = new StringBuilder();
+    sql.append("insert into ").
+        append(tableName).
+        append(" (").
+        append(metaSql).
+        append(") values(").
+        append(valueSql).
+        append(")");
+
+    return sql.toString();
   }
 }

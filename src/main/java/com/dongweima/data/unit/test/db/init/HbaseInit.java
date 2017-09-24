@@ -28,7 +28,9 @@ public class HbaseInit implements Init {
       Row row = new Row();
       row.setRowKey((String) values[0]);
       for (int i = 0; i < metas.length; i++) {
-        row.setCellValue(families[i], qualities[i], (String) values[i + 1]);
+        if (values[i + 1] != null && !(((String) values[i + 1])).equals("")) {
+          row.setCellValue(families[i], qualities[i], (String) values[i + 1]);
+        }
       }
       HbaseTestUtil.put(data.getTableName(), row);
     }

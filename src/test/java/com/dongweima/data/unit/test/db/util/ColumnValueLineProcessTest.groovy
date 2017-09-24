@@ -8,7 +8,7 @@ import static org.junit.Assert.assertEquals
 class ColumnValueLineProcessTest extends Specification {
   private ColumnValueLineProcess columnValueLineProcess = new ColumnValueLineProcess()
 
-  void "test use standard line which split with 1"() {
+  def "test use standard line which split with 1"() {
     when:
     ColumnValue result = columnValueLineProcess.dealWithLine("role:1          |every_day      |count         |   every_day_uv|             1|      schoolId1|        structId1")
 
@@ -16,7 +16,7 @@ class ColumnValueLineProcessTest extends Specification {
     assertEquals 7, result.values.size()
   }
 
-  void "test use special line which has null cell"() {
+  def "test use special line which has null cell"() {
     when:
     ColumnValue result = columnValueLineProcess.dealWithLine("1||||||s")
 
@@ -25,7 +25,7 @@ class ColumnValueLineProcessTest extends Specification {
   }
 
 
-  void "test use special line which end with 1"() {
+  def "test use special line which end with 1"() {
     when:
     ColumnValue result = columnValueLineProcess.dealWithLine("1|1|1|1|1|1|s|")
 

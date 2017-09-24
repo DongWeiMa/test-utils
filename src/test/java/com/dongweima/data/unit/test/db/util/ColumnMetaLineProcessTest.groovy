@@ -8,7 +8,7 @@ import static org.junit.Assert.assertArrayEquals
 class ColumnMetaLineProcessTest extends Specification {
   private ColumnMetaLineProcess columnMetaLineProcess = new ColumnMetaLineProcess()
 
-  void "test hbase meta"() {
+  def "test hbase meta"() {
     given:
     def arr = ["base:ptRule", "base:family", "base:quality", "org:schoolId", "org:structId"].toArray()
 
@@ -20,7 +20,7 @@ class ColumnMetaLineProcessTest extends Specification {
   }
 
 
-  void "test mysql meta"() {
+  def "test mysql meta"() {
     given:
     def arr = ["1", "2", "3"].toArray()
 

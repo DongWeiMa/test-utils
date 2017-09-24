@@ -13,7 +13,7 @@ class ColumnMetaTest extends Specification {
     columnMeta.addColumn("2")
   }
 
-  def "right test: when add column after copy should effect the copy"() {
+  def " when add column after copy should effect the copy"() {
     when:
     ColumnMeta result = columnMeta.copy()
     result.addColumn("3")

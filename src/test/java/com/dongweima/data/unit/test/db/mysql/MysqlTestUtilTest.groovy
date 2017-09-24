@@ -17,7 +17,7 @@ class MysqlTestUtilTest extends Specification {
 
   void "test insert batch"() {
     given:
-    Data data = DataInitScript.getData("test" + File.separator + "test")
+    Data data = DataInitScript.getDataWithResourcePath("test" + File.separator + "test")
 
     when:
     MysqlTestUtil.insertBatch(data)
