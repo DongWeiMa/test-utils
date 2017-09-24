@@ -8,7 +8,6 @@ public class ColumnValueLineProcess implements LineProcess<ColumnValue> {
 
   @Override
   public ColumnValue dealWithLine(String line) {
-    System.out.println(line);
     ColumnValue columnValue = new ColumnValue();
     List<String> values = split(line, "|");
     for (String value : values) {

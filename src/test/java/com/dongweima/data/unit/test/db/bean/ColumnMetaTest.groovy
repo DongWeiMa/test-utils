@@ -13,7 +13,7 @@ class ColumnMetaTest extends Specification {
     columnMeta.addColumn("2")
   }
 
-  def " when add column after copy should effect the copy"() {
+  def "对copy方法返回的结果进行测试 "() {
     when:
     ColumnMeta result = columnMeta.copy()
     result.addColumn("3")
@@ -30,7 +30,7 @@ class ColumnMetaTest extends Specification {
 
   }
 
-  def "get columns should return the new list"() {
+  def " 测试从columnMeta获取到的列在外部进行添加操作，内部会不会受到影响"() {
     when:
     List<String> columns = columnMeta.getColumns()
     columns.add("4")
