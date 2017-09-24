@@ -1,0 +1,8 @@
+hbase
+org(schoolId,structId,name)
+4               |every_day      |     |
+5               |               |count
+1
+2               |               |
+3               |
+6               |               |      | |

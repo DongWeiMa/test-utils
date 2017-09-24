@@ -8,6 +8,7 @@ public class ColumnValueLineProcess implements LineProcess<ColumnValue> {
 
   @Override
   public ColumnValue dealWithLine(String line) {
+    System.out.println(line);
     ColumnValue columnValue = new ColumnValue();
     List<String> values = split(line, "|");
     for (String value : values) {
@@ -17,7 +18,7 @@ public class ColumnValueLineProcess implements LineProcess<ColumnValue> {
     return columnValue;
   }
 
-  private static List<String> split(String s, String sp) {
+  protected static List<String> split(String s, String sp) {
     s = s.trim();
     if (!s.endsWith(sp)) {
       s = s + sp;

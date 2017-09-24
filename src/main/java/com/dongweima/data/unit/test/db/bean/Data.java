@@ -44,10 +44,20 @@ public class Data {
     return list;
   }
 
+  public void removeColumnValue(int index) {
+    columnValues.remove(index);
+  }
+
   public void addColumnValue(ColumnValue value) {
     columnValues.add(value);
   }
 
+  public int getColumnMetasSize() {
+    if (type.equals("mysql")) {
+      return columnMeta.getColumns().size();
+    }
+    return columnMeta.getColumns().size() + 1;
+  }
   //todo test
   @Override
   public String toString() {

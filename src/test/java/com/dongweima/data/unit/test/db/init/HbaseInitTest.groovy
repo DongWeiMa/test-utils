@@ -40,7 +40,7 @@ class HbaseInitTest extends Specification {
     cleanup:
     //todo clean hbase
     where:
-    data                                                        | _
-    DataInitScript.getData("test" + File.separator + "xyh_tag") | _
+    data                                                   | _
+    DataInitScript.getDataWithResourcePath("test/xyh_tag") | _
   }
 }

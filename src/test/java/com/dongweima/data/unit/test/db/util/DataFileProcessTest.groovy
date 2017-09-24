@@ -1,24 +1,31 @@
 package com.dongweima.data.unit.test.db.util
 
+import com.dongweima.data.unit.test.db.bean.ColumnValue
 import com.dongweima.data.unit.test.db.bean.Data
-import com.dongweima.utils.file.PathUtil
 import spock.lang.Specification
+import spock.lang.Unroll
 
 import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertTrue
 
 class DataFileProcessTest extends Specification {
   private DataFileProcess dataFileProcess = new DataFileProcess()
 
-  def "test deal with file"() {
-    given:
-    String filePath = new File(PathUtil.getBaseDir(), "/data/hbase/xyh_tag_condition").path
-
+  @Unroll
+  def "test deal with file #filepath"() {
     when:
-    Data result = dataFileProcess.readFile(filePath)
+    println(filePath)
+    Data result = dataFileProcess.readFileWithResourcePath(filePath)
 
     then:
     assertDataIsRight result
+
+    where:
+    filePath                       | _
+    "data/hbase/xyh_tag_condition" | _
+    "test/empty_column_mysql"      | _
+    "test/empty_column_hbase"      | _
+    "test/test"                    | _
+    "test/xyh_tag"                 | _
   }
 
   /**
@@ -26,10 +33,9 @@ class DataFileProcessTest extends Specification {
    * 数据的正确性应该交给对应的LineProcess处理器
    */
   private static void assertDataIsRight(Data result) {
-    assertEquals "xyh_tag_condition", result.tableName
-    assertEquals "hbase", result.getType()
-    assertTrue result.getColumnMeta().columns.size() > 0
-    assertTrue result.getColumnValues().size() > 0
+    for (ColumnValue columnValue : result.getColumnValues()) {
+      assertEquals result.getColumnMetasSize(), columnValue.getColumnValues().size()
+    }
   }
 }
 

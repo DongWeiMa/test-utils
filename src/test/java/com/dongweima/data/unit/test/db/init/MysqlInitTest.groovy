@@ -25,8 +25,8 @@ class MysqlInitTest extends Specification {
     H2Config.getSql().execute("delete from test where id=1 or id=2")
 
     where:
-    data                                                     | _
-    DataInitScript.getData("test" + File.separator + "test") | _
+    data                                                | _
+    DataInitScript.getDataWithResourcePath("test/test") | _
 
   }
 

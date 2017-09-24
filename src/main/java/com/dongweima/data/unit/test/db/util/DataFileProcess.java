@@ -30,8 +30,27 @@ public class DataFileProcess implements FileProcess<Data> {
       data.setColumnMeta(columnMetaLineProcess.dealWithLine(list.getFirst().trim()));
       list.removeFirst();
       for (String line : list) {
+        if (!line.trim().endsWith("|")) {
+          line = line + "|";
+        }
+        int size = data.getColumnMetasSize();
+        int length = ColumnValueLineProcess.split(line, "|").size();
+        if (length < size) {
+          StringBuilder lineBuilder = new StringBuilder(line);
+          for (int i = length; i < size; i++) {
+            lineBuilder.append("|");
+          }
+          line = lineBuilder.toString();
+        }
+        if (length > size) {
+          while (length >= size) {
+            line = line.substring(0, line.lastIndexOf("|"));
+            size++;
+          }
+        }
         data.addColumnValue(columnValueLineProcess.dealWithLine(line.trim()));
       }
+
       return data;
     } catch (Exception e) {
       logger.error(e.getMessage(), e);
